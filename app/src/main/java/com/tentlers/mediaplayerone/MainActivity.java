@@ -6,10 +6,12 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.tentlers.mediaplayerone.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
     MediaPlayer mediaPlayer;
     ActivityMainBinding mainBinding;
     @Override
@@ -38,6 +40,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                Toast.makeText(MainActivity.this, "completer", Toast.LENGTH_LONG).show();
+            }
+        });
 
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+
+        //If music is playing then pause it.
+//        if(mediaPlayer.isPlaying()) mediaPlayer.pause();
+        //release the resources
+        mediaPlayer.release();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Initialise the media player object with the resource id.
+        mediaPlayer = MediaPlayer.create(this, R.raw.song);
     }
 }
